@@ -2,24 +2,32 @@
 
 namespace AillieoUtils.EasyBindings
 {
-    public partial class BindableProperty<T>
+    public class BindableProperty<T>
     {
         public readonly Event<PropertyChangedEventArg<T>> onValueChanged = new Event<PropertyChangedEventArg<T>>();
 
+        private EqualityComparer<T> equalityComparer;
         private T value;
 
         public BindableProperty(T initialValue)
         {
             value = initialValue;
+            this.equalityComparer = EqualityComparer<T>.Default;
+        }
+
+        public BindableProperty(T initialValue, EqualityComparer<T> equalityComparer)
+        {
+            value = initialValue;
+            this.equalityComparer = equalityComparer;
         }
 
         public void Next(T nextValue)
         {
-            if (EqualityComparer<T>.Default.Equals(value, nextValue))
+            if (equalityComparer.Equals(value, nextValue))
             {
                 return;
             }
-            
+
             T oldValue = value;
             value = nextValue;
             onValueChanged.Invoke(new PropertyChangedEventArg<T>(oldValue, nextValue));
