@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace AillieoUtils.EasyBindings
 {
     public class Binder : IDisposable
     {
         private List<IEventHandle> handles;
+        private Event disposeEvent = new Event();
 
         public void Record(IEventHandle handle)
         {
@@ -33,6 +35,9 @@ namespace AillieoUtils.EasyBindings
             }
 
             handles.Clear();
+
+            disposeEvent.SafeInvoke();
+            disposeEvent.RemoveAllListeners();
         }
 
         public void Bind<T>(BindableProperty<T> bindableProperty, Action<PropertyChangedEventArg<T>> eventHandler)
@@ -47,6 +52,19 @@ namespace AillieoUtils.EasyBindings
             Record(handle);
         }
 
+        public void Bind(BindableObject bindableObject, string propertyName, Action eventHandler)
+        {
+            IEventHandle handle = bindableObject.onPropertyChanged.AddListener(property =>
+            {
+                if (property == propertyName)
+                {
+                    eventHandler?.Invoke();
+                }
+            });
+
+            Record(handle);
+        }
+
         public void Bind<T>(Event<T> evt, Action<T> eventHandler)
         {
             IEventHandle handle = evt.AddListener(eventHandler);
@@ -57,6 +75,25 @@ namespace AillieoUtils.EasyBindings
         {
             IEventHandle handle = evt.AddListener(eventHandler);
             Record(handle);
+        }
+
+        // Unity Events
+        public void Bind(UnityEvent evt, UnityAction eventHandler)
+        {
+            evt.AddListener(eventHandler);
+            disposeEvent.ListenOnce(() => evt.RemoveListener(eventHandler));
+        }
+
+        public void Bind<T>(UnityEvent<T> evt, UnityAction<T> eventHandler)
+        {
+            evt.AddListener(eventHandler);
+            disposeEvent.ListenOnce(() => evt.RemoveListener(eventHandler));
+        }
+
+        public void Bind<T, R>(UnityEvent<T, R> evt, UnityAction<T, R> eventHandler)
+        {
+            evt.AddListener(eventHandler);
+            disposeEvent.ListenOnce(() => evt.RemoveListener(eventHandler));
         }
     }
 }

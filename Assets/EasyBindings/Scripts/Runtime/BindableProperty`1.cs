@@ -5,8 +5,7 @@ namespace AillieoUtils.EasyBindings
     public class BindableProperty<T>
     {
         public readonly Event<PropertyChangedEventArg<T>> onValueChanged = new Event<PropertyChangedEventArg<T>>();
-
-        private EqualityComparer<T> equalityComparer;
+        private readonly EqualityComparer<T> equalityComparer;
         private T value;
 
         public BindableProperty(T initialValue)
