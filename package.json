@@ -1,0 +1,11 @@
+{
+    "name": "com.aillieo.easy-bindings",
+    "displayName": "AillieoUtils Easy Bindings",
+    "description": "AillieoUtils Easy Bindings",
+    "version": "1.0.0",
+    "unity": "2019.4",
+    "license": "MIT",
+    "dependencies": {
+        "com.aillieo.easy-events": "https://github.com/aillieo/EasyEvent.git#upm"
+    }
+}
