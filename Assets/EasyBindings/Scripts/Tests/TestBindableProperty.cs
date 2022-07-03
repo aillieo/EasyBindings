@@ -102,7 +102,7 @@ namespace AillieoUtils.EasyBindings.Tests
 
             Assert.AreEqual(intProperty.CurrentValue, 0);
 
-            binder.Bind(intProperty, change => counter++);
+            binder.BindPropertyChange(intProperty, change => counter++);
 
             intProperty.Next(1);
             Assert.AreEqual(intProperty.CurrentValue, 1);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AillieoUtils.EasyBindings
 {
@@ -57,12 +58,20 @@ namespace AillieoUtils.EasyBindings
 
             if (disposeEvent != null)
             {
-                disposeEvent.SafeInvoke();
+                try
+                {
+                    disposeEvent.SafeInvoke();
+                }
+                catch (Exception e)
+                {
+                    UnityEngine.Debug.LogError(e);
+                }
+
                 disposeEvent.RemoveAllListeners();
             }
         }
 
-        public void Bind<T>(BindableProperty<T> bindableProperty, Action<PropertyChangedEventArg<T>> eventHandler)
+        private void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<PropertyChangedEventArg<T>> eventHandler)
         {
             if (bindableProperty == null)
             {
@@ -78,7 +87,28 @@ namespace AillieoUtils.EasyBindings
             Record(handle);
         }
 
-        public void Bind(BindableObject bindableObject, Action<string> eventHandler)
+        public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<T, T> eventHandler)
+        {
+            BindPropertyChange(bindableProperty, arg => eventHandler(arg.oldValue, arg.nextValue));
+        }
+
+        public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action eventHandler)
+        {
+            BindPropertyChange(bindableProperty, (Action<PropertyChangedEventArg<T>>)(arg => eventHandler()));
+        }
+
+        public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<T> eventHandler)
+        {
+            BindPropertyChange(bindableProperty, arg => eventHandler(arg.nextValue));
+        }
+
+        public void BindPropertyValue<T>(BindableProperty<T> bindableProperty, Action<T> eventHandler)
+        {
+            BindPropertyChange(bindableProperty, eventHandler);
+            eventHandler.Invoke(bindableProperty.CurrentValue);
+        }
+
+        public void BindObject(BindableObject bindableObject, Action<string> eventHandler)
         {
             if (bindableObject == null)
             {
@@ -94,7 +124,7 @@ namespace AillieoUtils.EasyBindings
             Record(handle);
         }
 
-        public void Bind(BindableObject bindableObject, string propertyName, Action eventHandler)
+        public void BindObject(BindableObject bindableObject, string propertyName, Action eventHandler)
         {
             if (bindableObject == null)
             {
@@ -122,7 +152,7 @@ namespace AillieoUtils.EasyBindings
             Record(handle);
         }
 
-        public void Bind<T>(Event<T> evt, Action<T> eventHandler)
+        public void BindEvent<T>(Event<T> evt, Action<T> eventHandler)
         {
             if (evt == null)
             {
@@ -138,7 +168,7 @@ namespace AillieoUtils.EasyBindings
             Record(handle);
         }
 
-        public void Bind(Event evt, Action eventHandler)
+        public void BindEvent(Event evt, Action eventHandler)
         {
             if (evt == null)
             {

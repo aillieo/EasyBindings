@@ -1,6 +1,6 @@
 namespace AillieoUtils.EasyBindings
 {
-    public struct PropertyChangedEventArg<T>
+    public readonly struct PropertyChangedEventArg<T>
     {
         public readonly T oldValue;
         public readonly T nextValue;
