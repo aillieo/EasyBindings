@@ -22,7 +22,7 @@ namespace AillieoUtils.EasyBindings.Tests
             Binder binder = new Binder();
             int counter = 0;
 
-            binder.Bind(easyEvent0, () => counter++);
+            binder.BindEvent(easyEvent0, () => counter++);
 
             easyEvent0.Invoke();
             Assert.AreEqual(counter, 1);
@@ -41,13 +41,13 @@ namespace AillieoUtils.EasyBindings.Tests
             int counter0 = 0;
             int counter1 = 0;
 
-            binder.Bind(easyEvent0, () => counter0++);
+            binder.BindEvent(easyEvent0, () => counter0++);
 
             easyEvent0.Invoke();
             Assert.AreEqual(counter0, 1);
 
-            binder.Bind(easyEvent0, () => counter1++);
-            binder.Bind(easyEvent1, n => counter0 += n);
+            binder.BindEvent(easyEvent0, () => counter1++);
+            binder.BindEvent(easyEvent1, n => counter0 += n);
 
             easyEvent1.Invoke(5);
             Assert.AreEqual(counter0, 6);
@@ -73,7 +73,7 @@ namespace AillieoUtils.EasyBindings.Tests
             Binder binder = new Binder();
             int counter = 0;
 
-            binder.Bind(unityEvent0, () => counter++);
+            binder.BindUnityEvent(unityEvent0, () => counter++);
 
             unityEvent0.Invoke();
             Assert.AreEqual(counter, 1);
@@ -91,13 +91,13 @@ namespace AillieoUtils.EasyBindings.Tests
             int counter0 = 0;
             int counter1 = 0;
 
-            binder.Bind(unityEvent0, () => counter0++);
+            binder.BindUnityEvent(unityEvent0, () => counter0++);
 
             unityEvent0.Invoke();
             Assert.AreEqual(counter0, 1);
 
-            binder.Bind(unityEvent0, () => counter1++);
-            binder.Bind(unityEvent1, n => counter0 += n);
+            binder.BindUnityEvent(unityEvent0, () => counter1++);
+            binder.BindUnityEvent(unityEvent1, n => counter0 += n);
 
             unityEvent1.Invoke(5);
             Assert.AreEqual(counter0, 6);
