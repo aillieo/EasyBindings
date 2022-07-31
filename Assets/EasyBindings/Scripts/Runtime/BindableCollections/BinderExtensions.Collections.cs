@@ -16,5 +16,11 @@ namespace AillieoUtils.EasyBindings
             IEventHandle handle = dictionary.dictionaryChangedEvent.AddListener(eventHandler);
             binder.Record(handle);
         }
+
+        public static void BindSet<T>(this Binder binder, BindableSet<T> set, Action<SetChangedEventArg> eventHandler)
+        {
+            IEventHandle handle = set.setChangedEvent.AddListener(eventHandler);
+            binder.Record(handle);
+        }
     }
 }

@@ -59,6 +59,11 @@ namespace AillieoUtils.EasyBindings.Collections
 
         public void Clear()
         {
+            if (source.Count == 0)
+            {
+                return;
+            }
+
             source.Clear();
             NotifyPropertyChanged(-1, EventType.Clear);
         }
