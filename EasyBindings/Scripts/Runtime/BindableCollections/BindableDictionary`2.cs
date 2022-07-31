@@ -21,8 +21,15 @@ namespace AillieoUtils.EasyBindings.Collections
             get => source[key];
             set
             {
-                source[key] = value;
-                NotifyPropertyChanged(key, EventType.Update);
+                if (source.ContainsKey(key))
+                {
+                    source[key] = value;
+                    NotifyPropertyChanged(key, EventType.Update);
+                }
+                else
+                {
+                    Add(key, value);
+                }
             }
         }
 
@@ -49,8 +56,13 @@ namespace AillieoUtils.EasyBindings.Collections
 
         public bool Remove(TKey key)
         {
-            return source.Remove(key);
-            NotifyPropertyChanged(key, EventType.Remove);
+            if (source.Remove(key))
+            {
+                NotifyPropertyChanged(key, EventType.Remove);
+                return true;
+            }
+
+            return false;
         }
 
         public bool TryGetValue(TKey key, out TValue value)
@@ -66,6 +78,11 @@ namespace AillieoUtils.EasyBindings.Collections
 
         public void Clear()
         {
+            if (source.Count == 0)
+            {
+                return;
+            }
+
             source.Clear();
             NotifyPropertyChanged(default, EventType.Clear);
         }
