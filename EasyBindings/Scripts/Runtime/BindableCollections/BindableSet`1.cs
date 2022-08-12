@@ -1,15 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace AillieoUtils.EasyBindings.Collections
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class BindableSet<T> : ISet<T>
     {
-        private readonly HashSet<T> source;
         internal readonly Event<SetChangedEventArg> setChangedEvent = new Event<SetChangedEventArg>();
 
-        public int Count => source.Count;
+        private readonly HashSet<T> source;
+
+        public int Count => this.source.Count;
 
         public bool IsReadOnly => false;
 
@@ -35,20 +36,20 @@ namespace AillieoUtils.EasyBindings.Collections
 
         public void Clear()
         {
-            if (source.Count == 0)
+            if (this.source.Count == 0)
             {
                 return;
             }
 
-            source.Clear();
-            NotifyPropertyChanged(EventType.Clear);
+            this.source.Clear();
+            this.NotifyPropertyChanged(EventType.Clear);
         }
 
         public bool Add(T item)
         {
-            if (source.Add(item))
+            if (this.source.Add(item))
             {
-                NotifyPropertyChanged(EventType.Add);
+                this.NotifyPropertyChanged(EventType.Add);
                 return true;
             }
 
@@ -77,54 +78,54 @@ namespace AillieoUtils.EasyBindings.Collections
 
         public bool IsProperSubsetOf(IEnumerable<T> other)
         {
-            return source.IsProperSubsetOf(other);
+            return this.source.IsProperSubsetOf(other);
         }
 
         public bool IsProperSupersetOf(IEnumerable<T> other)
         {
-            return source.IsProperSupersetOf(other);
+            return this.source.IsProperSupersetOf(other);
         }
 
         public bool IsSubsetOf(IEnumerable<T> other)
         {
-            return source.IsSubsetOf(other);
+            return this.source.IsSubsetOf(other);
         }
 
         public bool IsSupersetOf(IEnumerable<T> other)
         {
-            return source.IsSupersetOf(other);
+            return this.source.IsSupersetOf(other);
         }
 
         public bool Overlaps(IEnumerable<T> other)
         {
-            return source.Overlaps(other);
+            return this.source.Overlaps(other);
         }
 
         public bool SetEquals(IEnumerable<T> other)
         {
-            return source.SetEquals(other);
+            return this.source.SetEquals(other);
         }
 
         void ICollection<T>.Add(T item)
         {
-            Add(item);
+            this.Add(item);
         }
 
         public bool Contains(T item)
         {
-            return source.Contains(item);
+            return this.source.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            ((ICollection<T>)source).CopyTo(array, arrayIndex);
+            ((ICollection<T>)this.source).CopyTo(array, arrayIndex);
         }
 
         public bool Remove(T item)
         {
-            if (source.Remove(item))
+            if (this.source.Remove(item))
             {
-                NotifyPropertyChanged(EventType.Remove);
+                this.NotifyPropertyChanged(EventType.Remove);
                 return true;
             }
 
@@ -133,17 +134,17 @@ namespace AillieoUtils.EasyBindings.Collections
 
         public IEnumerator<T> GetEnumerator()
         {
-            return source.GetEnumerator();
+            return this.source.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)source).GetEnumerator();
+            return ((IEnumerable)this.source).GetEnumerator();
         }
 
-        protected void NotifyPropertyChanged(EventType eventType)
+        private void NotifyPropertyChanged(EventType eventType)
         {
-            setChangedEvent.Invoke(new SetChangedEventArg(eventType));
+            this.setChangedEvent.Invoke(new SetChangedEventArg(eventType));
         }
     }
 }

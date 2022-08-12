@@ -1,7 +1,7 @@
-using UnityEngine.Events;
-
 namespace AillieoUtils.EasyBindings
 {
+    using UnityEngine.Events;
+
     public static partial class BinderExtensions
     {
         public static void BindUnityEvent(this Binder binder, UnityEvent evt, UnityAction eventHandler)

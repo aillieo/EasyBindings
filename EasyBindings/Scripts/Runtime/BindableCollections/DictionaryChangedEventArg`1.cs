@@ -4,6 +4,7 @@
     {
         public readonly T key;
         public readonly EventType type;
+
         public DictionaryChangedEventArg(T key, EventType type)
         {
             this.key = key;

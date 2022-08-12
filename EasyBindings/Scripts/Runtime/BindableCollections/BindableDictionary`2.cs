@@ -1,34 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-
 namespace AillieoUtils.EasyBindings.Collections
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class BindableDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        private readonly Dictionary<TKey, TValue> source;
         internal readonly Event<DictionaryChangedEventArg<TKey>> dictionaryChangedEvent = new Event<DictionaryChangedEventArg<TKey>>();
 
-        public ICollection<TKey> Keys => source.Keys;
+        private readonly Dictionary<TKey, TValue> source;
 
-        public ICollection<TValue> Values => source.Values;
+        public ICollection<TKey> Keys => this.source.Keys;
 
-        public int Count => source.Count;
+        public ICollection<TValue> Values => this.source.Values;
+
+        public int Count => this.source.Count;
 
         public bool IsReadOnly => false;
 
         public TValue this[TKey key]
         {
-            get => source[key];
+            get => this.source[key];
             set
             {
-                if (source.ContainsKey(key))
+                if (this.source.ContainsKey(key))
                 {
-                    source[key] = value;
-                    NotifyPropertyChanged(key, EventType.Update);
+                    this.source[key] = value;
+                    this.NotifyPropertyChanged(key, EventType.Update);
                 }
                 else
                 {
-                    Add(key, value);
+                    this.Add(key, value);
                 }
             }
         }
@@ -45,20 +46,20 @@ namespace AillieoUtils.EasyBindings.Collections
 
         public void Add(TKey key, TValue value)
         {
-            source.Add(key, value);
-            NotifyPropertyChanged(key, EventType.Add);
+            this.source.Add(key, value);
+            this.NotifyPropertyChanged(key, EventType.Add);
         }
 
         public bool ContainsKey(TKey key)
         {
-            return source.ContainsKey(key);
+            return this.source.ContainsKey(key);
         }
 
         public bool Remove(TKey key)
         {
-            if (source.Remove(key))
+            if (this.source.Remove(key))
             {
-                NotifyPropertyChanged(key, EventType.Remove);
+                this.NotifyPropertyChanged(key, EventType.Remove);
                 return true;
             }
 
@@ -67,55 +68,60 @@ namespace AillieoUtils.EasyBindings.Collections
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            return source.TryGetValue(key, out value);
+            return this.source.TryGetValue(key, out value);
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
-            ((ICollection<KeyValuePair<TKey, TValue>>)source).Add(item);
-            NotifyPropertyChanged(item.Key, EventType.Add);
+            ((ICollection<KeyValuePair<TKey, TValue>>)this.source).Add(item);
+            this.NotifyPropertyChanged(item.Key, EventType.Add);
         }
 
         public void Clear()
         {
-            if (source.Count == 0)
+            if (this.source.Count == 0)
             {
                 return;
             }
 
-            source.Clear();
-            NotifyPropertyChanged(default, EventType.Clear);
+            this.source.Clear();
+            this.NotifyPropertyChanged(default, EventType.Clear);
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            return ((ICollection<KeyValuePair<TKey, TValue>>)source).Contains(item);
+            return ((ICollection<KeyValuePair<TKey, TValue>>)this.source).Contains(item);
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            ((ICollection<KeyValuePair<TKey, TValue>>)source).CopyTo(array, arrayIndex);
+            ((ICollection<KeyValuePair<TKey, TValue>>)this.source).CopyTo(array, arrayIndex);
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            return ((ICollection<KeyValuePair<TKey, TValue>>)source).Remove(item);
-            NotifyPropertyChanged(item.Key, EventType.Remove);
+            if (((ICollection<KeyValuePair<TKey, TValue>>)this.source).Remove(item))
+            {
+                this.NotifyPropertyChanged(item.Key, EventType.Remove);
+                return true;
+            }
+
+            return false;
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return source.GetEnumerator();
+            return this.source.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)source).GetEnumerator();
+            return ((IEnumerable)this.source).GetEnumerator();
         }
 
-        protected void NotifyPropertyChanged(TKey key, EventType eventType)
+        private void NotifyPropertyChanged(TKey key, EventType eventType)
         {
-            dictionaryChangedEvent.Invoke(new DictionaryChangedEventArg<TKey>(key, eventType));
+            this.dictionaryChangedEvent.Invoke(new DictionaryChangedEventArg<TKey>(key, eventType));
         }
     }
 }
