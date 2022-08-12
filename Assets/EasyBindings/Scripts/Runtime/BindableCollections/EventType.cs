@@ -1,7 +1,7 @@
-using System;
-
 namespace AillieoUtils.EasyBindings.Collections
 {
+    using System;
+
     [Flags]
     public enum EventType : byte
     {

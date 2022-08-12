@@ -1,8 +1,8 @@
-using System;
-using AillieoUtils.EasyBindings.Collections;
-
 namespace AillieoUtils.EasyBindings
 {
+    using System;
+    using AillieoUtils.EasyBindings.Collections;
+
     public static partial class BinderExtensions
     {
         public static void BindList<T>(this Binder binder, BindableList<T> list, Action<ListChangedEventArg> eventHandler)

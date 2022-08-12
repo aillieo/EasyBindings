@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace AillieoUtils.EasyBindings
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Binder : IDisposable
     {
         private List<IEventHandle> handles;
@@ -16,16 +15,16 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            if (handles == null)
+            if (this.handles == null)
             {
-                handles = new List<IEventHandle>()
+                this.handles = new List<IEventHandle>()
                 {
-                    handle
+                    handle,
                 };
             }
             else
             {
-                handles.Add(handle);
+                this.handles.Add(handle);
             }
         }
 
@@ -36,38 +35,38 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            if (disposeEvent == null)
+            if (this.disposeEvent == null)
             {
-                disposeEvent = new Event();
+                this.disposeEvent = new Event();
             }
 
-            disposeEvent.AddListener(action);
+            this.disposeEvent.AddListener(action);
         }
 
         public void Dispose()
         {
-            if (handles != null)
+            if (this.handles != null)
             {
-                foreach (var handle in handles)
+                foreach (var handle in this.handles)
                 {
                     handle.Unlisten();
                 }
 
-                handles.Clear();
+                this.handles.Clear();
             }
 
-            if (disposeEvent != null)
+            if (this.disposeEvent != null)
             {
                 try
                 {
-                    disposeEvent.SafeInvoke();
+                    this.disposeEvent.SafeInvoke();
                 }
                 catch (Exception e)
                 {
                     UnityEngine.Debug.LogError(e);
                 }
 
-                disposeEvent.RemoveAllListeners();
+                this.disposeEvent.RemoveAllListeners();
             }
         }
 
@@ -84,27 +83,27 @@ namespace AillieoUtils.EasyBindings
             }
 
             IEventHandle handle = bindableProperty.onValueChanged.AddListener(eventHandler);
-            Record(handle);
+            this.Record(handle);
         }
 
         public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<T, T> eventHandler)
         {
-            BindPropertyChange(bindableProperty, arg => eventHandler(arg.oldValue, arg.nextValue));
+            this.BindPropertyChange(bindableProperty, arg => eventHandler(arg.oldValue, arg.nextValue));
         }
 
         public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action eventHandler)
         {
-            BindPropertyChange(bindableProperty, (Action<PropertyChangedEventArg<T>>)(arg => eventHandler()));
+            this.BindPropertyChange(bindableProperty, (Action<PropertyChangedEventArg<T>>)(arg => eventHandler()));
         }
 
         public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<T> eventHandler)
         {
-            BindPropertyChange(bindableProperty, arg => eventHandler(arg.nextValue));
+            this.BindPropertyChange(bindableProperty, arg => eventHandler(arg.nextValue));
         }
 
         public void BindPropertyValue<T>(BindableProperty<T> bindableProperty, Action<T> eventHandler)
         {
-            BindPropertyChange(bindableProperty, eventHandler);
+            this.BindPropertyChange(bindableProperty, eventHandler);
             eventHandler.Invoke(bindableProperty.CurrentValue);
         }
 
@@ -121,7 +120,7 @@ namespace AillieoUtils.EasyBindings
             }
 
             IEventHandle handle = bindableObject.onPropertyChanged.AddListener(eventHandler);
-            Record(handle);
+            this.Record(handle);
         }
 
         public void BindObject(BindableObject bindableObject, string propertyName, Action eventHandler)
@@ -149,7 +148,7 @@ namespace AillieoUtils.EasyBindings
                 }
             });
 
-            Record(handle);
+            this.Record(handle);
         }
 
         public void BindEvent<T>(Event<T> evt, Action<T> eventHandler)
@@ -165,7 +164,7 @@ namespace AillieoUtils.EasyBindings
             }
 
             IEventHandle handle = evt.AddListener(eventHandler);
-            Record(handle);
+            this.Record(handle);
         }
 
         public void BindEvent(Event evt, Action eventHandler)
@@ -181,7 +180,7 @@ namespace AillieoUtils.EasyBindings
             }
 
             IEventHandle handle = evt.AddListener(eventHandler);
-            Record(handle);
+            this.Record(handle);
         }
     }
 }
