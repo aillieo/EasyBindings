@@ -1,9 +1,15 @@
+// -----------------------------------------------------------------------
+// <copyright file="Binder.cs" company="AillieoTech">
+// Copyright (c) AillieoTech. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
 namespace AillieoUtils.EasyBindings
 {
     using System;
     using System.Collections.Generic;
 
-    public class Binder : IDisposable
+    public sealed class Binder : IDisposable
     {
         private List<IEventHandle> handles;
         private Event disposeEvent;
@@ -70,35 +76,19 @@ namespace AillieoUtils.EasyBindings
             }
         }
 
-        private void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<PropertyChangedEventArg<T>> eventHandler)
-        {
-            if (bindableProperty == null)
-            {
-                throw new ArgumentNullException(nameof(bindableProperty));
-            }
-
-            if (eventHandler == null)
-            {
-                return;
-            }
-
-            IEventHandle handle = bindableProperty.onValueChanged.AddListener(eventHandler);
-            this.Record(handle);
-        }
-
         public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<T, T> eventHandler)
         {
-            this.BindPropertyChange(bindableProperty, arg => eventHandler(arg.oldValue, arg.nextValue));
+            this.BindPropertyChangeInternal(bindableProperty, arg => eventHandler(arg.oldValue, arg.nextValue));
         }
 
         public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action eventHandler)
         {
-            this.BindPropertyChange(bindableProperty, (Action<PropertyChangedEventArg<T>>)(arg => eventHandler()));
+            this.BindPropertyChangeInternal(bindableProperty, (Action<PropertyChangedEventArg<T>>)(arg => eventHandler()));
         }
 
         public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<T> eventHandler)
         {
-            this.BindPropertyChange(bindableProperty, arg => eventHandler(arg.nextValue));
+            this.BindPropertyChangeInternal(bindableProperty, arg => eventHandler(arg.nextValue));
         }
 
         public void BindPropertyValue<T>(BindableProperty<T> bindableProperty, Action<T> eventHandler)
@@ -144,7 +134,7 @@ namespace AillieoUtils.EasyBindings
             {
                 if (property == propertyName)
                 {
-                    eventHandler?.Invoke();
+                    eventHandler.Invoke();
                 }
             });
 
@@ -180,6 +170,22 @@ namespace AillieoUtils.EasyBindings
             }
 
             IEventHandle handle = evt.AddListener(eventHandler);
+            this.Record(handle);
+        }
+
+        private void BindPropertyChangeInternal<T>(BindableProperty<T> bindableProperty, Action<PropertyChangedEventArg<T>> eventHandler)
+        {
+            if (bindableProperty == null)
+            {
+                throw new ArgumentNullException(nameof(bindableProperty));
+            }
+
+            if (eventHandler == null)
+            {
+                return;
+            }
+
+            IEventHandle handle = bindableProperty.onValueChanged.AddListener(eventHandler);
             this.Record(handle);
         }
     }
