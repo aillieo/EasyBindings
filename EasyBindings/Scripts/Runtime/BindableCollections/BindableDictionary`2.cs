@@ -18,6 +18,8 @@ namespace AillieoUtils.EasyBindings.Collections
     {
         internal readonly Event<DictionaryChangedEventArg<TKey>> dictionaryChangedEvent = new Event<DictionaryChangedEventArg<TKey>>();
 
+        private static readonly bool valueTypeIsClass = typeof(TValue).IsClass;
+
         private readonly Dictionary<TKey, TValue> source;
 
         /// <summary>
@@ -74,8 +76,13 @@ namespace AillieoUtils.EasyBindings.Collections
             get => this.source[key];
             set
             {
-                if (this.source.ContainsKey(key))
+                if (this.source.TryGetValue(key, out TValue oldValue))
                 {
+                    if (valueTypeIsClass && object.ReferenceEquals(oldValue, value))
+                    {
+                        return;
+                    }
+
                     this.source[key] = value;
                     this.NotifyPropertyChanged(key, EventType.Update);
                 }

@@ -16,7 +16,7 @@ namespace AillieoUtils.EasyBindings.Collections
     /// <typeparam name="T">Type of element.</typeparam>
     public class BindableSet<T> : ISet<T>
     {
-        internal readonly Event<SetChangedEventArg> setChangedEvent = new Event<SetChangedEventArg>();
+        internal readonly Event<SetChangedEventArg<T>> setChangedEvent = new Event<SetChangedEventArg<T>>();
 
         private readonly HashSet<T> source;
 
@@ -71,7 +71,7 @@ namespace AillieoUtils.EasyBindings.Collections
             }
 
             this.source.Clear();
-            this.NotifyPropertyChanged(EventType.Clear);
+            this.NotifyPropertyChanged(default, EventType.Clear);
         }
 
         /// <inheritdoc/>
@@ -79,7 +79,7 @@ namespace AillieoUtils.EasyBindings.Collections
         {
             if (this.source.Add(item))
             {
-                this.NotifyPropertyChanged(EventType.Add);
+                this.NotifyPropertyChanged(item, EventType.Add);
                 return true;
             }
 
@@ -169,7 +169,7 @@ namespace AillieoUtils.EasyBindings.Collections
         {
             if (this.source.Remove(item))
             {
-                this.NotifyPropertyChanged(EventType.Remove);
+                this.NotifyPropertyChanged(item, EventType.Remove);
                 return true;
             }
 
@@ -188,9 +188,9 @@ namespace AillieoUtils.EasyBindings.Collections
             return ((IEnumerable)this.source).GetEnumerator();
         }
 
-        private void NotifyPropertyChanged(EventType eventType)
+        private void NotifyPropertyChanged(T item, EventType eventType)
         {
-            this.setChangedEvent.Invoke(new SetChangedEventArg(eventType));
+            this.setChangedEvent.Invoke(new SetChangedEventArg<T>(item, eventType));
         }
     }
 }

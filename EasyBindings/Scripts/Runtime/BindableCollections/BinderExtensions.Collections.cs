@@ -48,7 +48,7 @@ namespace AillieoUtils.EasyBindings
         /// <param name="set"><see cref="BindableSet{T}"/> to bind to.</param>
         /// <param name="eventHandler">Event handler to bind.</param>
         /// <typeparam name="T">Set element type.</typeparam>
-        public static void BindSet<T>(this Binder binder, BindableSet<T> set, Action<SetChangedEventArg> eventHandler)
+        public static void BindSet<T>(this Binder binder, BindableSet<T> set, Action<SetChangedEventArg<T>> eventHandler)
         {
             IEventHandle handle = set.setChangedEvent.AddListener(eventHandler);
             binder.Record(handle);
