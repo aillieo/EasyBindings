@@ -9,11 +9,24 @@ namespace AillieoUtils.EasyBindings
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// A recorder that keeps bindings of:
+    /// 1. An <see cref="Event"/>/<see cref="Event{T}"/> and its handlers;
+    /// 2. A <see cref="UnityEngine.Events.UnityEvent"/> and its handlers;
+    /// 3. A <see cref="BindableProperty{T}"/> and handlers to its value changes;
+    /// 4. A <see cref="BindableObject"/> and handlers to its property changes;
+    /// 5. Custom bindings with custom cleanup action registrations.
+    /// and can remove all these bindings with simply <see cref="Dispose"/>.
+    /// </summary>
     public sealed class Binder : IDisposable
     {
         private List<IEventHandle> handles;
         private Event disposeEvent;
 
+        /// <summary>
+        /// Record an <see cref="IEventHandle"/>.
+        /// </summary>
+        /// <param name="handle">The <see cref="IEventHandle"/> to record.</param>
         public void Record(IEventHandle handle)
         {
             if (handle == null)
@@ -34,6 +47,10 @@ namespace AillieoUtils.EasyBindings
             }
         }
 
+        /// <summary>
+        /// Register an custom cleanup action, which will be invoked when calling <see cref="Dispose"/>.
+        /// </summary>
+        /// <param name="action">The custom action to register.</param>
         public void RegisterCustomCleanupAction(Action action)
         {
             if (action == null)
@@ -49,6 +66,9 @@ namespace AillieoUtils.EasyBindings
             this.disposeEvent.AddListener(action);
         }
 
+        /// <summary>
+        /// Remove all event handlers recorded, and invoke all cleanup actions registered.
+        /// </summary>
         public void Dispose()
         {
             if (this.handles != null)
@@ -76,27 +96,56 @@ namespace AillieoUtils.EasyBindings
             }
         }
 
+        /// <summary>
+        /// Bind an event handler to a <see cref="BindableProperty{T}"/>, and the handler will be invoked when property value changes.
+        /// </summary>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <param name="bindableProperty">The <see cref="BindableProperty{T}"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action{T, T}"/> to bind, and both the old and new values will be passed as parameters.</param>
         public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<T, T> eventHandler)
         {
             this.BindPropertyChangeInternal(bindableProperty, arg => eventHandler(arg.oldValue, arg.nextValue));
         }
 
-        public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action eventHandler)
-        {
-            this.BindPropertyChangeInternal(bindableProperty, (Action<PropertyChangedEventArg<T>>)(arg => eventHandler()));
-        }
-
+        /// <summary>
+        /// Bind an event handler to a <see cref="BindableProperty{T}"/>, and the handler will be invoked when property value changes.
+        /// </summary>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <param name="bindableProperty">The <see cref="BindableProperty{T}"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action{T}"/> to bind, and the new value will be passed as parameter.</param>
         public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action<T> eventHandler)
         {
             this.BindPropertyChangeInternal(bindableProperty, arg => eventHandler(arg.nextValue));
         }
 
+        /// <summary>
+        /// Bind an event handler to a <see cref="BindableProperty{T}"/>, and the handler will be invoked when property value changes.
+        /// </summary>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <param name="bindableProperty">The <see cref="BindableProperty{T}"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action"/> to bind, and nothing will be passed as parameter.</param>
+        public void BindPropertyChange<T>(BindableProperty<T> bindableProperty, Action eventHandler)
+        {
+            this.BindPropertyChangeInternal(bindableProperty, arg => eventHandler());
+        }
+
+        /// <summary>
+        /// Bind an event handler to a <see cref="BindableProperty{T}"/>, and the handler will be invoked immediately and later when property value changes.
+        /// </summary>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <param name="bindableProperty">The <see cref="BindableProperty{T}"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action{T}"/> to bind, and the value of property will be passed as parameter.</param>
         public void BindPropertyValue<T>(BindableProperty<T> bindableProperty, Action<T> eventHandler)
         {
             this.BindPropertyChange(bindableProperty, eventHandler);
             eventHandler.Invoke(bindableProperty.CurrentValue);
         }
 
+        /// <summary>
+        /// Bind an event handler to a <see cref="BindableObject"/>, and the handler will be invoked when object property changes.
+        /// </summary>
+        /// <param name="bindableObject">The <see cref="BindableObject"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action{T}"/> to bind, and the property name will be passed as parameter.</param>
         public void BindObject(BindableObject bindableObject, Action<string> eventHandler)
         {
             if (bindableObject == null)
@@ -113,6 +162,12 @@ namespace AillieoUtils.EasyBindings
             this.Record(handle);
         }
 
+        /// <summary>
+        /// Bind an event handler to a <see cref="BindableObject"/>, and the handler will be invoked when object property changes.
+        /// </summary>
+        /// <param name="bindableObject">The <see cref="BindableObject"/> to bind to.</param>
+        /// <param name="propertyName">The property that is to listen to.</param>
+        /// <param name="eventHandler"><see cref="Action"/> to bind.</param>
         public void BindObject(BindableObject bindableObject, string propertyName, Action eventHandler)
         {
             if (bindableObject == null)
@@ -141,6 +196,12 @@ namespace AillieoUtils.EasyBindings
             this.Record(handle);
         }
 
+        /// <summary>
+        /// Bind an event handler to an Easy Event.
+        /// </summary>
+        /// <typeparam name="T">Event argument type.</typeparam>
+        /// <param name="evt"><see cref="Event{T}"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action{T}"/> to bind.</param>
         public void BindEvent<T>(Event<T> evt, Action<T> eventHandler)
         {
             if (evt == null)
@@ -157,6 +218,11 @@ namespace AillieoUtils.EasyBindings
             this.Record(handle);
         }
 
+        /// <summary>
+        /// Bind an event handler to an Easy Event.
+        /// </summary>
+        /// <param name="evt"><see cref="Event"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action"/> to bind.</param>
         public void BindEvent(Event evt, Action eventHandler)
         {
             if (evt == null)

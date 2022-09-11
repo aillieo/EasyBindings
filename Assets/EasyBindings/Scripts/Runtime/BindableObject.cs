@@ -26,6 +26,36 @@ namespace AillieoUtils.EasyBindings
         }
 
         /// <summary>
+        /// A helper method used to change value of a property and fire event.
+        /// </summary>
+        /// <param name="currentValue">Current value of the property.</param>
+        /// <param name="newValue">New value of the property.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <typeparam name="T">Type of the property.</typeparam>
+        /// <returns>Whether the property value changed.</returns>
+        protected bool SetValue<T>(ref T currentValue, T newValue, [CallerMemberName] string propertyName = "")
+        {
+            if (typeof(T).IsValueType)
+            {
+                if (EqualityComparer<T>.Default.Equals(currentValue, newValue))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if ((currentValue == null && newValue == null) || (currentValue != null && currentValue.Equals(newValue)))
+                {
+                    return false;
+                }
+            }
+
+            currentValue = newValue;
+            this.NotifyPropertyChanged(propertyName);
+            return true;
+        }
+
+        /// <summary>
         /// A helper method used to change value of a struct property and fire event.
         /// </summary>
         /// <param name="currentValue">Current value of the property.</param>
