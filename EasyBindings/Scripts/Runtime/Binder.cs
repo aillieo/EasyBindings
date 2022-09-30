@@ -145,7 +145,7 @@ namespace AillieoUtils.EasyBindings
         /// Bind an event handler to a <see cref="BindableObject"/>, and the handler will be invoked when object property changes.
         /// </summary>
         /// <param name="bindableObject">The <see cref="BindableObject"/> to bind to.</param>
-        /// <param name="eventHandler"><see cref="Action{T}"/> to bind, and the property name will be passed as parameter.</param>
+        /// <param name="eventHandler"><see cref="Action{string}"/> to bind, and the property name will be passed as parameter.</param>
         public void BindObject(BindableObject bindableObject, Action<string> eventHandler)
         {
             if (bindableObject == null)
