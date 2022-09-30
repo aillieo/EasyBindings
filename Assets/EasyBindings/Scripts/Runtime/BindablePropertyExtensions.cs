@@ -4,10 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Game
+namespace AillieoUtils.EasyBindings
 {
-    using AillieoUtils.EasyBindings;
-
     /// <summary>
     /// Short cuts for numeric <see cref="BindableProperty{T}"/> types.
     /// </summary>
