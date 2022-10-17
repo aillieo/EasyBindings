@@ -14,7 +14,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableSet<int> set = new BindableSet<int>();
-            binder.BindSet(set, e =>
+            binder.BindSetEvent(set, e =>
             {
                 Assert.AreEqual(e.type, EventType.Add);
                 Assert.AreEqual(set.Count, 1);
@@ -34,7 +34,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableSet<int> set = new BindableSet<int>() { 1, 2, 3 };
-            binder.BindSet(set, e =>
+            binder.BindSetEvent(set, e =>
             {
                 Assert.AreEqual(e.type, EventType.Remove);
                 Assert.AreEqual(set.Count, 2);
@@ -57,7 +57,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableSet<int> set = new BindableSet<int>() { 1, 2, 3 };
-            binder.BindSet(set, e =>
+            binder.BindSetEvent(set, e =>
             {
                 Assert.AreEqual(e.type, EventType.Clear);
                 invoke++;

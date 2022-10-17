@@ -21,34 +21,34 @@ namespace AillieoUtils.EasyBindings
         /// <param name="list"><see cref="BindableList{T}"/> to bind to.</param>
         /// <param name="eventHandler">Event handler to bind.</param>
         /// <typeparam name="T">List element type.</typeparam>
-        public static void BindList<T>(this Binder binder, BindableList<T> list, Action<ListChangedEventArg> eventHandler)
+        public static void BindListEvent<T>(this Binder binder, BindableList<T> list, Action<ListChangedEventArg> eventHandler)
         {
             IEventHandle handle = list.listChangedEvent.AddListener(eventHandler);
             binder.Record(handle);
         }
 
         /// <summary>
-        /// Bind an event handler to a <see cref="BindDictionary{TKey, TValue}"/>.
+        /// Bind an event handler to a <see cref="BindableDictionary{TKey, TValue}"/>.
         /// </summary>
         /// <param name="binder">Binder object to record this binding.</param>
-        /// <param name="dictionary"><see cref="BindDictionary{TKey, TValue}"/> to bind to.</param>
+        /// <param name="dictionary"><see cref="BindableDictionary{TKey, TValue}"/> to bind to.</param>
         /// <param name="eventHandler">Event handler to bind.</param>
         /// <typeparam name="TKey">Dictionary key type.</typeparam>
         /// <typeparam name="TValue">Dictionary value type.</typeparam>
-        public static void BindDictionary<TKey, TValue>(this Binder binder, BindableDictionary<TKey, TValue> dictionary, Action<DictionaryChangedEventArg<TKey>> eventHandler)
+        public static void BindDictionaryEvent<TKey, TValue>(this Binder binder, BindableDictionary<TKey, TValue> dictionary, Action<DictionaryChangedEventArg<TKey>> eventHandler)
         {
             IEventHandle handle = dictionary.dictionaryChangedEvent.AddListener(eventHandler);
             binder.Record(handle);
         }
 
         /// <summary>
-        /// Bind an event handler to a <see cref="BindSet{T}"/>.
+        /// Bind an event handler to a <see cref="BindableSet{T}"/>.
         /// </summary>
         /// <param name="binder">Binder object to record this binding.</param>
         /// <param name="set"><see cref="BindableSet{T}"/> to bind to.</param>
         /// <param name="eventHandler">Event handler to bind.</param>
         /// <typeparam name="T">Set element type.</typeparam>
-        public static void BindSet<T>(this Binder binder, BindableSet<T> set, Action<SetChangedEventArg<T>> eventHandler)
+        public static void BindSetEvent<T>(this Binder binder, BindableSet<T> set, Action<SetChangedEventArg<T>> eventHandler)
         {
             IEventHandle handle = set.setChangedEvent.AddListener(eventHandler);
             binder.Record(handle);

@@ -12,7 +12,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableList<int> list = new BindableList<int>();
-            binder.BindList(list, e =>
+            binder.BindListEvent(list, e =>
             {
                 Assert.AreEqual(e.type, EventType.Add);
                 Assert.AreEqual(e.index, 0);
@@ -31,7 +31,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableList<int> list = new BindableList<int>() { 1, 2, 3 };
-            binder.BindList(list, e =>
+            binder.BindListEvent(list, e =>
             {
                 Assert.AreEqual(e.type, EventType.Remove);
                 Assert.AreEqual(e.index, 1);
@@ -50,7 +50,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableList<int> list = new BindableList<int>() { 1 };
-            binder.BindList(list, e =>
+            binder.BindListEvent(list, e =>
             {
                 Assert.AreEqual(e.type, EventType.Update);
                 Assert.AreEqual(e.index, 0);
@@ -69,7 +69,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableList<int> list = new BindableList<int>() { 1, 2, 3 };
-            binder.BindList(list, e =>
+            binder.BindListEvent(list, e =>
             {
                 Assert.AreEqual(e.type, EventType.Clear);
                 Assert.AreEqual(list.Count, 0);

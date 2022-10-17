@@ -56,7 +56,7 @@ namespace AillieoUtils.EasyBindings.Tests
             Binder binder = new Binder();
             int counter = 0;
 
-            binder.BindObject(testClass, propName =>
+            binder.BindObjectChange(testClass, propName =>
             {
                 counter++;
                 Assert.AreEqual(propName, "Age");
@@ -75,7 +75,7 @@ namespace AillieoUtils.EasyBindings.Tests
             Binder binder = new Binder();
             int counter = 0;
 
-            binder.BindObject(testClass, "Age", () =>
+            binder.BindObjectChange(testClass, "Age", () =>
             {
                 counter++;
             });
