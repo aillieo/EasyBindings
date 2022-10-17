@@ -14,7 +14,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableDictionary<int, int> dict = new BindableDictionary<int, int>();
-            binder.BindDictionary(dict, e =>
+            binder.BindDictionaryEvent(dict, e =>
             {
                 Assert.AreEqual(e.type, EventType.Add);
                 Assert.AreEqual(e.key, 1);
@@ -28,7 +28,7 @@ namespace AillieoUtils.EasyBindings.Tests
 
             binder.Dispose();
 
-            binder.BindDictionary(dict, e =>
+            binder.BindDictionaryEvent(dict, e =>
             {
                 Assert.AreEqual(e.type, EventType.Add);
                 Assert.AreEqual(e.key, 2);
@@ -47,7 +47,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableDictionary<int, int> dict = new BindableDictionary<int, int>() { { 1, 1 }, { 2, 2 } };
-            binder.BindDictionary(dict, e =>
+            binder.BindDictionaryEvent(dict, e =>
             {
                 Assert.AreEqual(e.type, EventType.Remove);
                 Assert.AreEqual(e.key, 1);
@@ -69,7 +69,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableDictionary<int, int> dict = new BindableDictionary<int, int>() { { 1, 1 }, { 2, 2 } };
-            binder.BindDictionary(dict, e =>
+            binder.BindDictionaryEvent(dict, e =>
             {
                 Assert.AreEqual(e.type, EventType.Update);
                 if (e.key == 1)
@@ -97,7 +97,7 @@ namespace AillieoUtils.EasyBindings.Tests
             int invoke = 0;
             Binder binder = new Binder();
             BindableDictionary<int, int> dict = new BindableDictionary<int, int>() { { 1, 1 }, { 2, 2 } };
-            binder.BindDictionary(dict, e =>
+            binder.BindDictionaryEvent(dict, e =>
             {
                 Assert.AreEqual(e.type, EventType.Clear);
                 invoke++;

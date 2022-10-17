@@ -50,7 +50,7 @@ namespace AillieoUtils.EasyBindings.UGUI
         public static void BindM2V_TextText(this Binder binder, BindableObject bindableObject, string propName, Text text, Func<BindableObject, string> resolver)
         {
             text.text = resolver(bindableObject);
-            binder.BindObject(bindableObject, propName, () => text.text = resolver(bindableObject));
+            binder.BindObjectChange(bindableObject, propName, () => text.text = resolver(bindableObject));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace AillieoUtils.EasyBindings.UGUI
         public static void BindM2V_ImageSprite(this Binder binder, BindableObject bindableObject, string propName, Image image, Func<BindableObject, Sprite> resolver)
         {
             image.sprite = resolver(bindableObject);
-            binder.BindObject(bindableObject, propName, () => image.sprite = resolver(bindableObject));
+            binder.BindObjectChange(bindableObject, propName, () => image.sprite = resolver(bindableObject));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace AillieoUtils.EasyBindings.UGUI
         public static void BindM2V_ImageFillAmount(this Binder binder, BindableObject bindableObject, string propName, Image image, Func<BindableObject, float> resolver)
         {
             image.fillAmount = resolver(bindableObject);
-            binder.BindObject(bindableObject, propName, () => image.fillAmount = resolver(bindableObject));
+            binder.BindObjectChange(bindableObject, propName, () => image.fillAmount = resolver(bindableObject));
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace AillieoUtils.EasyBindings.UGUI
         public static void BindM2V_SliderValue(this Binder binder, BindableObject bindableObject, string propName, Slider slider, Func<BindableObject, float> resolver)
         {
             slider.value = resolver(bindableObject);
-            binder.BindObject(bindableObject, propName, () => slider.value = resolver(bindableObject));
+            binder.BindObjectChange(bindableObject, propName, () => slider.value = resolver(bindableObject));
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace AillieoUtils.EasyBindings.UGUI
         public static void BindM2V_SelectableInteractable(this Binder binder, BindableObject bindableObject, string propName, Selectable selectable, Func<BindableObject, bool> resolver)
         {
             selectable.interactable = resolver(bindableObject);
-            binder.BindObject(bindableObject, propName, () => selectable.interactable = resolver(bindableObject));
+            binder.BindObjectChange(bindableObject, propName, () => selectable.interactable = resolver(bindableObject));
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace AillieoUtils.EasyBindings.UGUI
         public static void BindM2V_GraphicColor(this Binder binder, BindableObject bindableObject, string propName, Graphic graphic, Func<BindableObject, Color> resolver)
         {
             graphic.color = resolver(bindableObject);
-            binder.BindObject(bindableObject, propName, () => graphic.color = resolver(bindableObject));
+            binder.BindObjectChange(bindableObject, propName, () => graphic.color = resolver(bindableObject));
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace AillieoUtils.EasyBindings.UGUI
         public static void BindM2V_BehaviourEnabled(this Binder binder, BindableObject bindableObject, string propName, Behaviour behaviour, Func<BindableObject, bool> resolver)
         {
             behaviour.enabled = resolver(bindableObject);
-            binder.BindObject(bindableObject, propName, () => behaviour.enabled = resolver(bindableObject));
+            binder.BindObjectChange(bindableObject, propName, () => behaviour.enabled = resolver(bindableObject));
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace AillieoUtils.EasyBindings.UGUI
         public static void BindM2V_GameObjectActive(this Binder binder, BindableObject bindableObject, string propName, GameObject gameObject, Func<BindableObject, bool> resolver)
         {
             gameObject.SetActive(resolver(bindableObject));
-            binder.BindObject(bindableObject, propName, () => gameObject.SetActive(resolver(bindableObject)));
+            binder.BindObjectChange(bindableObject, propName, () => gameObject.SetActive(resolver(bindableObject)));
         }
     }
 }

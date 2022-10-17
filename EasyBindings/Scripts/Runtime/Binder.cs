@@ -146,7 +146,7 @@ namespace AillieoUtils.EasyBindings
         /// </summary>
         /// <param name="bindableObject">The <see cref="BindableObject"/> to bind to.</param>
         /// <param name="eventHandler"><see cref="Action{string}"/> to bind, and the property name will be passed as parameter.</param>
-        public void BindObject(BindableObject bindableObject, Action<string> eventHandler)
+        public void BindObjectChange(BindableObject bindableObject, Action<string> eventHandler)
         {
             if (bindableObject == null)
             {
@@ -168,7 +168,7 @@ namespace AillieoUtils.EasyBindings
         /// <param name="bindableObject">The <see cref="BindableObject"/> to bind to.</param>
         /// <param name="propertyName">The property that is to listen to.</param>
         /// <param name="eventHandler"><see cref="Action"/> to bind.</param>
-        public void BindObject(BindableObject bindableObject, string propertyName, Action eventHandler)
+        public void BindObjectChange(BindableObject bindableObject, string propertyName, Action eventHandler)
         {
             if (bindableObject == null)
             {
