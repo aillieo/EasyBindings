@@ -85,11 +85,11 @@ namespace AillieoUtils.EasyBindings
             {
                 try
                 {
-                    this.disposeEvent.SafeInvoke();
+                    this.disposeEvent.InvokeAll();
                 }
                 catch (Exception e)
                 {
-                    UnityEngine.Debug.LogError(e);
+                    UnityEngine.Debug.LogException(e);
                 }
 
                 this.disposeEvent.RemoveAllListeners();
