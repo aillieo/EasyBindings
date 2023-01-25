@@ -16,6 +16,44 @@ namespace AillieoUtils.EasyBindings.UGUI
     public static partial class BinderUGUIExtensions
     {
         /// <summary>
+        /// Create a one-way binding from a <see cref="BindableProperty{bool}"/> to a <see cref="Toggle"/>'s value.
+        /// </summary>
+        /// <param name="binder"><see cref="Binder"/> to record this binding.</param>
+        /// <param name="bindableProperty">Property to bind.</param>
+        /// <param name="toggle">Toggle to bind.</param>
+        public static void BindM2V_ToggleIsOn(this Binder binder, BindableProperty<bool> bindableProperty, Toggle toggle)
+        {
+            binder.BindPropertyValue(bindableProperty, v => toggle.isOn = v);
+        }
+
+        /// <summary>
+        /// Create a one-way binding from a <see cref="BindableProperty{T}"/> to a <see cref="Toggle"/>'s value.
+        /// </summary>
+        /// <param name="binder"><see cref="Binder"/> to record this binding.</param>
+        /// <param name="bindableProperty">Property to bind.</param>
+        /// <param name="toggle">Toggle to bind.</param>
+        /// <param name="mapper">Convert function.</param>
+        /// <typeparam name="T">Value type of BindableProperty.</typeparam>
+        public static void BindM2V_ToggleIsOn<T>(this Binder binder, BindableProperty<T> bindableProperty, Toggle toggle, Func<T, bool> mapper)
+        {
+            binder.BindPropertyValue(bindableProperty, v => toggle.isOn = mapper(v));
+        }
+
+        /// <summary>
+        /// Create a one-way binding from a <see cref="BindableObject"/> to a <see cref="Toggle"/>'s value.
+        /// </summary>
+        /// <param name="binder"><see cref="Binder"/> to record this binding.</param>
+        /// <param name="bindableObject">BindableObject to bind.</param>
+        /// <param name="propName">Name of property that concerned.</param>
+        /// <param name="toggle">Toggle to bind.</param>
+        /// <param name="resolver">Resolver function.</param>
+        public static void BindM2V_ToggleIsOn(this Binder binder, BindableObject bindableObject, string propName, Toggle toggle, Func<BindableObject, bool> resolver)
+        {
+            toggle.isOn = resolver(bindableObject);
+            binder.BindObjectChange(bindableObject, propName, () => toggle.isOn = resolver(bindableObject));
+        }
+
+        /// <summary>
         /// Create a one-way binding from a <see cref="BindableProperty{string}"/> to a <see cref="Text"/>'s value.
         /// </summary>
         /// <param name="binder"><see cref="Binder"/> to record this binding.</param>
