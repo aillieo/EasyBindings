@@ -16,7 +16,7 @@ namespace AillieoUtils.EasyBindings.Collections
     /// <typeparam name="TValue">Type of value.</typeparam>
     public class BindableDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        internal readonly Event<DictionaryChangedEventArg<TKey>> dictionaryChangedEvent = new Event<DictionaryChangedEventArg<TKey>>();
+        internal readonly EasyDelegate<DictionaryChangedEventArg<TKey>> dictionaryChangedEvent = new EasyDelegate<DictionaryChangedEventArg<TKey>>();
 
         private static readonly bool valueTypeIsClass = typeof(TValue).IsClass;
 

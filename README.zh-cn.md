@@ -56,11 +56,10 @@ private void OnDisable()
 绑定[EasyEvent](https://github.com/aillieo/EasyEvent.git)，直接绑定。解除绑定时，调用`Dispose()`：
 
 ```c#
-private AillieoUtils.Event<int> someEvent = new Event<int>();
-
 private Binder binder = new Binder();
 private void OnEnable()
 {
+    EasyEvent<int> someEvent = ...;
     binder.BindEvent(someEvent, v => UnityEngine.Debug.Log(v));
 }
 

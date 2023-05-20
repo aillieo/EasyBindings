@@ -11,7 +11,7 @@ namespace AillieoUtils.EasyBindings
 
     /// <summary>
     /// A recorder that keeps bindings of:
-    /// 1. An <see cref="Event"/>/<see cref="Event{T}"/> and its handlers;
+    /// 1. An <see cref="EasyDelegate"/>/<see cref="EasyDelegate{T}"/> and its handlers;
     /// 2. A <see cref="UnityEngine.Events.UnityEvent"/> and its handlers;
     /// 3. A <see cref="BindableProperty{T}"/> and handlers to its value changes;
     /// 4. A <see cref="BindableObject"/> and handlers to its property changes;
@@ -20,14 +20,14 @@ namespace AillieoUtils.EasyBindings
     /// </summary>
     public sealed class Binder : IDisposable
     {
-        private List<IEventHandle> handles;
-        private Event disposeEvent;
+        private List<EventHandle> handles;
+        private EasyDelegate disposeEvent;
 
         /// <summary>
-        /// Record an <see cref="IEventHandle"/>.
+        /// Record an <see cref="EventHandle"/>.
         /// </summary>
-        /// <param name="handle">The <see cref="IEventHandle"/> to record.</param>
-        public void Record(IEventHandle handle)
+        /// <param name="handle">The <see cref="EventHandle"/> to record.</param>
+        public void Record(EventHandle handle)
         {
             if (handle == null)
             {
@@ -36,7 +36,7 @@ namespace AillieoUtils.EasyBindings
 
             if (this.handles == null)
             {
-                this.handles = new List<IEventHandle>()
+                this.handles = new List<EventHandle>()
                 {
                     handle,
                 };
@@ -60,7 +60,7 @@ namespace AillieoUtils.EasyBindings
 
             if (this.disposeEvent == null)
             {
-                this.disposeEvent = new Event();
+                this.disposeEvent = new EasyDelegate();
             }
 
             this.disposeEvent.AddListener(action);
@@ -158,7 +158,7 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            IEventHandle handle = bindableObject.onPropertyChanged.AddListener(eventHandler);
+            EventHandle handle = bindableObject.onPropertyChanged.AddListener(eventHandler);
             this.Record(handle);
         }
 
@@ -185,7 +185,7 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            IEventHandle handle = bindableObject.onPropertyChanged.AddListener(property =>
+            EventHandle handle = bindableObject.onPropertyChanged.AddListener(property =>
             {
                 if (property == propertyName)
                 {
@@ -197,16 +197,21 @@ namespace AillieoUtils.EasyBindings
         }
 
         /// <summary>
-        /// Bind an event handler to an Easy Event.
+        /// Bind an handler to an <see cref="IListenable{T}"/>.
         /// </summary>
-        /// <typeparam name="T">Event argument type.</typeparam>
-        /// <param name="evt"><see cref="Event{T}"/> to bind to.</param>
+        /// <typeparam name="T">Argument type.</typeparam>
+        /// <param name="listenable"><see cref="IListenable{T}"/> to bind to.</param>
         /// <param name="eventHandler"><see cref="Action{T}"/> to bind.</param>
-        public void BindEvent<T>(Event<T> evt, Action<T> eventHandler)
+        public void BindListenable<T>(IListenable<T> listenable, Action<T> eventHandler)
         {
-            if (evt == null)
+            if (listenable is EasyEvent<T> evt && !evt.Valid)
             {
-                throw new ArgumentNullException(nameof(evt));
+                throw new ArgumentNullException(nameof(listenable));
+            }
+
+            if (listenable == null)
+            {
+                throw new ArgumentNullException(nameof(listenable));
             }
 
             if (eventHandler == null)
@@ -214,18 +219,45 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            IEventHandle handle = evt.AddListener(eventHandler);
+            EventHandle handle = listenable.AddListener(eventHandler);
+            this.Record(handle);
+        }
+
+        /// <summary>
+        /// Bind an handler to an <see cref="IListenable"/>.
+        /// </summary>
+        /// <param name="listenable"><see cref="IListenable"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action"/> to bind.</param>
+        public void BindListenable(IListenable listenable, Action eventHandler)
+        {
+            if (listenable is EasyEvent evt && !evt.Valid)
+            {
+                throw new ArgumentNullException(nameof(listenable));
+            }
+
+            if (listenable == null)
+            {
+                throw new ArgumentNullException(nameof(listenable));
+            }
+
+            if (eventHandler == null)
+            {
+                return;
+            }
+
+            EventHandle handle = listenable.AddListener(eventHandler);
             this.Record(handle);
         }
 
         /// <summary>
         /// Bind an event handler to an Easy Event.
         /// </summary>
-        /// <param name="evt"><see cref="Event"/> to bind to.</param>
-        /// <param name="eventHandler"><see cref="Action"/> to bind.</param>
-        public void BindEvent(Event evt, Action eventHandler)
+        /// <typeparam name="T">Event argument type.</typeparam>
+        /// <param name="evt"><see cref="EasyEvent{T}"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action{T}"/> to bind.</param>
+        public void BindEvent<T>(EasyEvent<T> evt, Action<T> eventHandler)
         {
-            if (evt == null)
+            if (!evt.Valid)
             {
                 throw new ArgumentNullException(nameof(evt));
             }
@@ -235,7 +267,28 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            IEventHandle handle = evt.AddListener(eventHandler);
+            EventHandle handle = evt.AddListener(eventHandler);
+            this.Record(handle);
+        }
+
+        /// <summary>
+        /// Bind an event handler to an Easy Event.
+        /// </summary>
+        /// <param name="evt"><see cref="EasyEvent"/> to bind to.</param>
+        /// <param name="eventHandler"><see cref="Action"/> to bind.</param>
+        public void BindEvent(EasyEvent evt, Action eventHandler)
+        {
+            if (!evt.Valid)
+            {
+                throw new ArgumentNullException(nameof(evt));
+            }
+
+            if (eventHandler == null)
+            {
+                return;
+            }
+
+            EventHandle handle = evt.AddListener(eventHandler);
             this.Record(handle);
         }
 
@@ -251,7 +304,7 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            IEventHandle handle = bindableProperty.onValueChanged.AddListener(eventHandler);
+            EventHandle handle = bindableProperty.onValueChanged.AddListener(eventHandler);
             this.Record(handle);
         }
     }

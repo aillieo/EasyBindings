@@ -9,8 +9,8 @@ namespace AillieoUtils.EasyBindings.Tests
     {
         public class UnityEventInt : UnityEvent<int> { }
 
-        private Event easyEvent0 = new Event();
-        private Event<int> easyEvent1 = new Event<int>();
+        private EasyDelegate easyEvent0 = new EasyDelegate();
+        private EasyDelegate<int> easyEvent1 = new EasyDelegate<int>();
         private UnityEvent unityEvent0 = new UnityEvent();
         private UnityEventInt unityEvent1 = new UnityEventInt();
         private event Action csEvent0;
@@ -22,7 +22,7 @@ namespace AillieoUtils.EasyBindings.Tests
             Binder binder = new Binder();
             int counter = 0;
 
-            binder.BindEvent(easyEvent0, () => counter++);
+            binder.BindListenable(easyEvent0, () => counter++);
 
             easyEvent0.Invoke();
             Assert.AreEqual(counter, 1);
@@ -41,13 +41,13 @@ namespace AillieoUtils.EasyBindings.Tests
             int counter0 = 0;
             int counter1 = 0;
 
-            binder.BindEvent(easyEvent0, () => counter0++);
+            binder.BindListenable(easyEvent0, () => counter0++);
 
             easyEvent0.Invoke();
             Assert.AreEqual(counter0, 1);
 
-            binder.BindEvent(easyEvent0, () => counter1++);
-            binder.BindEvent(easyEvent1, n => counter0 += n);
+            binder.BindListenable(easyEvent0, () => counter1++);
+            binder.BindListenable(easyEvent1, n => counter0 += n);
 
             easyEvent1.Invoke(5);
             Assert.AreEqual(counter0, 6);

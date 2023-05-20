@@ -14,7 +14,7 @@ namespace AillieoUtils.EasyBindings
     /// <typeparam name="T">Value type of a property.</typeparam>
     public class BindableProperty<T>
     {
-        internal readonly Event<PropertyChangedEventArg<T>> onValueChanged = new Event<PropertyChangedEventArg<T>>();
+        internal readonly EasyDelegate<PropertyChangedEventArg<T>> onValueChanged = new EasyDelegate<PropertyChangedEventArg<T>>();
         private readonly IEqualityComparer<T> equalityComparer;
         private T value;
 

@@ -1,7 +1,8 @@
 {
     "name": "AillieoUtils.EasyBindings",
+    "rootNamespace": "",
     "references": [
-        "AillieoUtils.EasyEvents"
+        "AillieoUtils.EasyEvent"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

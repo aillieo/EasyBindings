@@ -14,7 +14,7 @@ namespace AillieoUtils.EasyBindings
     /// </summary>
     public abstract class BindableObject
     {
-        internal readonly Event<string> onPropertyChanged = new Event<string>();
+        internal readonly EasyDelegate<string> onPropertyChanged = new EasyDelegate<string>();
 
         /// <summary>
         /// Notify that the property changed.

@@ -56,11 +56,10 @@ private void OnDisable()
 As for [EasyEvent](https://github.com/aillieo/EasyEvent.git), bind callbacks directly. Call `Dispose()` when to remove.
 
 ```c#
-private AillieoUtils.Event<int> someEvent = new Event<int>();
-
 private Binder binder = new Binder();
 private void OnEnable()
 {
+    EasyEvent<int> someEvent = ...;
     binder.BindEvent(someEvent, v => UnityEngine.Debug.Log(v));
 }
 

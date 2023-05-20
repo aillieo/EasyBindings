@@ -16,7 +16,7 @@ namespace AillieoUtils.EasyBindings.Collections
     /// <typeparam name="T">Type of element.</typeparam>
     public class BindableSet<T> : ISet<T>
     {
-        internal readonly Event<SetChangedEventArg<T>> setChangedEvent = new Event<SetChangedEventArg<T>>();
+        internal readonly EasyDelegate<SetChangedEventArg<T>> setChangedEvent = new EasyDelegate<SetChangedEventArg<T>>();
 
         private readonly HashSet<T> source;
 
