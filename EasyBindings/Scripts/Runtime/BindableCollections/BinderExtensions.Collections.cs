@@ -23,7 +23,7 @@ namespace AillieoUtils.EasyBindings
         /// <typeparam name="T">List element type.</typeparam>
         public static void BindListEvent<T>(this Binder binder, BindableList<T> list, Action<ListChangedEventArg> eventHandler)
         {
-            IEventHandle handle = list.listChangedEvent.AddListener(eventHandler);
+            EventHandle handle = list.listChangedEvent.AddListener(eventHandler);
             binder.Record(handle);
         }
 
@@ -37,7 +37,7 @@ namespace AillieoUtils.EasyBindings
         /// <typeparam name="TValue">Dictionary value type.</typeparam>
         public static void BindDictionaryEvent<TKey, TValue>(this Binder binder, BindableDictionary<TKey, TValue> dictionary, Action<DictionaryChangedEventArg<TKey>> eventHandler)
         {
-            IEventHandle handle = dictionary.dictionaryChangedEvent.AddListener(eventHandler);
+            EventHandle handle = dictionary.dictionaryChangedEvent.AddListener(eventHandler);
             binder.Record(handle);
         }
 
@@ -50,7 +50,7 @@ namespace AillieoUtils.EasyBindings
         /// <typeparam name="T">Set element type.</typeparam>
         public static void BindSetEvent<T>(this Binder binder, BindableSet<T> set, Action<SetChangedEventArg<T>> eventHandler)
         {
-            IEventHandle handle = set.setChangedEvent.AddListener(eventHandler);
+            EventHandle handle = set.setChangedEvent.AddListener(eventHandler);
             binder.Record(handle);
         }
     }

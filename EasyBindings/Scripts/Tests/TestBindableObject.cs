@@ -37,7 +37,7 @@ namespace AillieoUtils.EasyBindings.Tests
             TestClass testClass = new TestClass();
             int counter = 0;
 
-            IEventHandle handle = testClass.onPropertyChanged.AddListener(propName =>
+            EventHandle handle = testClass.onPropertyChanged.AddListener(propName =>
             {
                 counter++;
                 Assert.AreEqual(propName, "Age");

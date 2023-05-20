@@ -1,9 +1,10 @@
 {
     "name": "AillieoUtils.EasyBindings.Tests",
+    "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "AillieoUtils.EasyEvents",
+        "AillieoUtils.EasyEvent",
         "AillieoUtils.EasyBindings"
     ],
     "includePlatforms": [],

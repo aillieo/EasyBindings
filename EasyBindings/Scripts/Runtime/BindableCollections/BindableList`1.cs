@@ -15,7 +15,7 @@ namespace AillieoUtils.EasyBindings.Collections
     /// <typeparam name="T">Type of element.</typeparam>
     public class BindableList<T> : IList<T>
     {
-        internal readonly Event<ListChangedEventArg> listChangedEvent = new Event<ListChangedEventArg>();
+        internal readonly EasyDelegate<ListChangedEventArg> listChangedEvent = new EasyDelegate<ListChangedEventArg>();
 
         private readonly List<T> source;
 

@@ -15,7 +15,7 @@ namespace AillieoUtils.EasyBindings.Tests
 
             Assert.AreEqual(intProperty.CurrentValue, 0);
 
-            IEventHandle handle = intProperty.onValueChanged.AddListener(change =>
+            EventHandle handle = intProperty.onValueChanged.AddListener(change =>
             {
                 counter++;
             });
@@ -48,7 +48,7 @@ namespace AillieoUtils.EasyBindings.Tests
 
             Assert.AreEqual(intProperty.CurrentValue, oldValue);
 
-            IEventHandle handle = intProperty.onValueChanged.AddListener(change =>
+            EventHandle handle = intProperty.onValueChanged.AddListener(change =>
             {
                 Assert.AreEqual(oldValue, change.oldValue);
                 Assert.AreEqual(newValue, change.nextValue);
@@ -74,7 +74,7 @@ namespace AillieoUtils.EasyBindings.Tests
 
             Assert.AreEqual(stringProperty.CurrentValue, string.Empty);
 
-            IEventHandle handle = stringProperty.onValueChanged.AddListener(change => counter++);
+            EventHandle handle = stringProperty.onValueChanged.AddListener(change => counter++);
 
             stringProperty.Next("SomeValue");
             Assert.AreEqual(counter, 1);
