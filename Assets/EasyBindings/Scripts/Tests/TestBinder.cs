@@ -1,19 +1,29 @@
-using NUnit.Framework;
-using System;
-using UnityEngine.Events;
+// -----------------------------------------------------------------------
+// <copyright file="TestBinder.cs" company="AillieoTech">
+// Copyright (c) AillieoTech. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace AillieoUtils.EasyBindings.Tests
 {
+    using System;
+    using NUnit.Framework;
+    using UnityEngine.Events;
+
     [Category("Binder")]
     public class TestBinder
     {
-        public class UnityEventInt : UnityEvent<int> { }
+        public class UnityEventInt : UnityEvent<int>
+        {
+        }
 
         private EasyDelegate easyEvent0 = new EasyDelegate();
         private EasyDelegate<int> easyEvent1 = new EasyDelegate<int>();
         private UnityEvent unityEvent0 = new UnityEvent();
         private UnityEventInt unityEvent1 = new UnityEventInt();
+
         private event Action csEvent0;
+
         private event Action<int> csEvent1;
 
         [Test]
@@ -22,16 +32,16 @@ namespace AillieoUtils.EasyBindings.Tests
             Binder binder = new Binder();
             int counter = 0;
 
-            binder.BindListenable(easyEvent0, () => counter++);
+            binder.BindListenable(this.easyEvent0, () => counter++);
 
-            easyEvent0.Invoke();
+            this.easyEvent0.Invoke();
             Assert.AreEqual(counter, 1);
 
             binder.Dispose();
 
-            easyEvent0.Invoke();
+            this.easyEvent0.Invoke();
             Assert.AreEqual(counter, 1);
-            Assert.AreEqual(easyEvent0.ListenerCount, 0);
+            Assert.AreEqual(this.easyEvent0.ListenerCount, 0);
         }
 
         [Test]
@@ -41,30 +51,30 @@ namespace AillieoUtils.EasyBindings.Tests
             int counter0 = 0;
             int counter1 = 0;
 
-            binder.BindListenable(easyEvent0, () => counter0++);
+            binder.BindListenable(this.easyEvent0, () => counter0++);
 
-            easyEvent0.Invoke();
+            this.easyEvent0.Invoke();
             Assert.AreEqual(counter0, 1);
 
-            binder.BindListenable(easyEvent0, () => counter1++);
-            binder.BindListenable(easyEvent1, n => counter0 += n);
+            binder.BindListenable(this.easyEvent0, () => counter1++);
+            binder.BindListenable(this.easyEvent1, n => counter0 += n);
 
-            easyEvent1.Invoke(5);
+            this.easyEvent1.Invoke(5);
             Assert.AreEqual(counter0, 6);
             Assert.AreEqual(counter1, 0);
 
-            easyEvent0.Invoke();
+            this.easyEvent0.Invoke();
             Assert.AreEqual(counter0, 7);
             Assert.AreEqual(counter1, 1);
 
             binder.Dispose();
 
-            easyEvent0.Invoke();
-            easyEvent1.Invoke(5);
+            this.easyEvent0.Invoke();
+            this.easyEvent1.Invoke(5);
             Assert.AreEqual(counter0, 7);
             Assert.AreEqual(counter1, 1);
-            Assert.AreEqual(easyEvent0.ListenerCount, 0);
-            Assert.AreEqual(easyEvent1.ListenerCount, 0);
+            Assert.AreEqual(this.easyEvent0.ListenerCount, 0);
+            Assert.AreEqual(this.easyEvent1.ListenerCount, 0);
         }
 
         [Test]
@@ -73,14 +83,14 @@ namespace AillieoUtils.EasyBindings.Tests
             Binder binder = new Binder();
             int counter = 0;
 
-            binder.BindUnityEvent(unityEvent0, () => counter++);
+            binder.BindUnityEvent(this.unityEvent0, () => counter++);
 
-            unityEvent0.Invoke();
+            this.unityEvent0.Invoke();
             Assert.AreEqual(counter, 1);
 
             binder.Dispose();
 
-            unityEvent0.Invoke();
+            this.unityEvent0.Invoke();
             Assert.AreEqual(counter, 1);
         }
 
@@ -91,26 +101,26 @@ namespace AillieoUtils.EasyBindings.Tests
             int counter0 = 0;
             int counter1 = 0;
 
-            binder.BindUnityEvent(unityEvent0, () => counter0++);
+            binder.BindUnityEvent(this.unityEvent0, () => counter0++);
 
-            unityEvent0.Invoke();
+            this.unityEvent0.Invoke();
             Assert.AreEqual(counter0, 1);
 
-            binder.BindUnityEvent(unityEvent0, () => counter1++);
-            binder.BindUnityEvent(unityEvent1, n => counter0 += n);
+            binder.BindUnityEvent(this.unityEvent0, () => counter1++);
+            binder.BindUnityEvent(this.unityEvent1, n => counter0 += n);
 
-            unityEvent1.Invoke(5);
+            this.unityEvent1.Invoke(5);
             Assert.AreEqual(counter0, 6);
             Assert.AreEqual(counter1, 0);
 
-            unityEvent0.Invoke();
+            this.unityEvent0.Invoke();
             Assert.AreEqual(counter0, 7);
             Assert.AreEqual(counter1, 1);
 
             binder.Dispose();
 
-            unityEvent0.Invoke();
-            unityEvent1.Invoke(5);
+            this.unityEvent0.Invoke();
+            this.unityEvent1.Invoke(5);
             Assert.AreEqual(counter0, 7);
             Assert.AreEqual(counter1, 1);
         }
@@ -122,15 +132,15 @@ namespace AillieoUtils.EasyBindings.Tests
             int counter = 0;
 
             Action action = () => counter++;
-            csEvent0 += action;
-            binder.RegisterCustomCleanupAction(() => csEvent0 -= action);
+            this.csEvent0 += action;
+            binder.RegisterCustomCleanupAction(() => this.csEvent0 -= action);
 
-            csEvent0?.Invoke();
+            this.csEvent0?.Invoke();
             Assert.AreEqual(counter, 1);
 
             binder.Dispose();
 
-            csEvent0?.Invoke();
+            this.csEvent0?.Invoke();
             Assert.AreEqual(counter, 1);
         }
 
@@ -142,31 +152,31 @@ namespace AillieoUtils.EasyBindings.Tests
             int counter1 = 0;
 
             Action action0 = () => counter0++;
-            csEvent0 += action0;
-            binder.RegisterCustomCleanupAction(() => csEvent0 -= action0);
+            this.csEvent0 += action0;
+            binder.RegisterCustomCleanupAction(() => this.csEvent0 -= action0);
 
-            csEvent0?.Invoke();
+            this.csEvent0?.Invoke();
             Assert.AreEqual(counter0, 1);
 
             Action action1 = () => counter1++;
-            csEvent0 += action1;
-            binder.RegisterCustomCleanupAction(() => csEvent0 -= action1);
+            this.csEvent0 += action1;
+            binder.RegisterCustomCleanupAction(() => this.csEvent0 -= action1);
             Action<int> action2 = n => counter0 += n;
-            csEvent1 += action2;
-            binder.RegisterCustomCleanupAction(() => csEvent1 -= action2);
+            this.csEvent1 += action2;
+            binder.RegisterCustomCleanupAction(() => this.csEvent1 -= action2);
 
-            csEvent1?.Invoke(5);
+            this.csEvent1?.Invoke(5);
             Assert.AreEqual(counter0, 6);
             Assert.AreEqual(counter1, 0);
 
-            csEvent0?.Invoke();
+            this.csEvent0?.Invoke();
             Assert.AreEqual(counter0, 7);
             Assert.AreEqual(counter1, 1);
 
             binder.Dispose();
 
-            csEvent0?.Invoke();
-            csEvent1?.Invoke(5);
+            this.csEvent0?.Invoke();
+            this.csEvent1?.Invoke(5);
             Assert.AreEqual(counter0, 7);
             Assert.AreEqual(counter1, 1);
         }

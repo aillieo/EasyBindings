@@ -87,27 +87,27 @@ namespace AillieoUtils.EasyBindings.Collections
         }
 
         /// <inheritdoc/>
-        public void SymmetricExceptWith(IEnumerable<T> other)
+        void ISet<T>.SymmetricExceptWith(IEnumerable<T> other)
         {
-            throw new NotSupportedException("SymmetricExceptWith is not supported for a BindableSet.");
+            throw new NotSupportedException($"SymmetricExceptWith is not supported for a {nameof(BindableSet<T>)}.");
         }
 
         /// <inheritdoc/>
-        public void UnionWith(IEnumerable<T> other)
+        void ISet<T>.UnionWith(IEnumerable<T> other)
         {
-            throw new NotSupportedException("UnionWith is not supported for a BindableSet.");
+            throw new NotSupportedException($"UnionWith is not supported for a {nameof(BindableSet<T>)}.");
         }
 
         /// <inheritdoc/>
-        public void ExceptWith(IEnumerable<T> other)
+        void ISet<T>.ExceptWith(IEnumerable<T> other)
         {
-            throw new NotSupportedException("ExceptWith is not supported for a BindableSet.");
+            throw new NotSupportedException($"ExceptWith is not supported for a {nameof(BindableSet<T>)}.");
         }
 
         /// <inheritdoc/>
-        public void IntersectWith(IEnumerable<T> other)
+        void ISet<T>.IntersectWith(IEnumerable<T> other)
         {
-            throw new NotSupportedException("IntersectWith is not supported for a BindableSet.");
+            throw new NotSupportedException($"IntersectWith is not supported for a {nameof(BindableSet<T>)}.");
         }
 
         /// <inheritdoc/>

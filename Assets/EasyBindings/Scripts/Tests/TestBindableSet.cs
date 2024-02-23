@@ -1,9 +1,13 @@
-using AillieoUtils.EasyBindings.Collections;
-using NUnit.Framework;
-using System;
+// -----------------------------------------------------------------------
+// <copyright file="TestBindableSet.cs" company="AillieoTech">
+// Copyright (c) AillieoTech. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace AillieoUtils.EasyBindings.Tests
 {
+    using AillieoUtils.EasyBindings.Collections;
+    using NUnit.Framework;
 
     [Category("BindableSet")]
     public class TestBindableSet

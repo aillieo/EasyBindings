@@ -14,7 +14,12 @@ namespace AillieoUtils.EasyBindings
     /// </summary>
     public abstract class BindableObject
     {
-        internal readonly EasyDelegate<string> onPropertyChanged = new EasyDelegate<string>();
+        internal readonly EasyDelegate<string> onPropertyChangedDel = new EasyDelegate<string>();
+
+        /// <summary>
+        /// Gets the event that the object property changed.
+        /// </summary>
+        public EasyEvent<string> onPropertyChanged => this.onPropertyChangedDel;
 
         /// <summary>
         /// Notify that the property changed.
@@ -22,7 +27,7 @@ namespace AillieoUtils.EasyBindings
         /// <param name="propertyName">Name of the changed property.</param>
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            this.onPropertyChanged.Invoke(propertyName);
+            this.onPropertyChangedDel.Invoke(propertyName);
         }
 
         /// <summary>
