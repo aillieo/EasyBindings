@@ -14,7 +14,7 @@ namespace AillieoUtils.EasyBindings
     /// <typeparam name="T">Value type of a property.</typeparam>
     public class BindableProperty<T>
     {
-        internal readonly EasyDelegate<PropertyChangedEventArg<T>> onValueChanged = new EasyDelegate<PropertyChangedEventArg<T>>();
+        internal readonly EasyDelegate<PropertyChangedEventArg<T>> onValueChangedDel = new EasyDelegate<PropertyChangedEventArg<T>>();
         private readonly IEqualityComparer<T> equalityComparer;
         private T value;
 
@@ -45,6 +45,11 @@ namespace AillieoUtils.EasyBindings
         public T CurrentValue => this.value;
 
         /// <summary>
+        /// Gets the event that the property value changed.
+        /// </summary>
+        public EasyEvent<PropertyChangedEventArg<T>> onValueChanged => this.onValueChangedDel;
+
+        /// <summary>
         /// Set new value of the property.
         /// </summary>
         /// <param name="nextValue">New value of the property.</param>
@@ -58,7 +63,7 @@ namespace AillieoUtils.EasyBindings
 
             T oldValue = this.value;
             this.value = nextValue;
-            this.onValueChanged.Invoke(new PropertyChangedEventArg<T>(oldValue, nextValue));
+            this.onValueChangedDel.Invoke(new PropertyChangedEventArg<T>(oldValue, nextValue));
             return true;
         }
     }

@@ -1,30 +1,29 @@
-using NUnit.Framework;
-using System;
-using UnityEngine;
-using UnityEngine.Events;
+// -----------------------------------------------------------------------
+// <copyright file="TestBindableObject.cs" company="AillieoTech">
+// Copyright (c) AillieoTech. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace AillieoUtils.EasyBindings.Tests
 {
+    using NUnit.Framework;
+
     public class TestClass : BindableObject
     {
         private int age;
+
         public int Age
         {
-            get { return age; }
-            set
-            {
-                SetStructValue(ref age, value);
-            }
+            get { return this.age; }
+            set { this.SetStructValue(ref this.age, value); }
         }
 
         private string address;
+
         public string Address
         {
-            get { return address; }
-            set
-            {
-                SetClassValue(ref address, value);
-            }
+            get { return this.address; }
+            set { this.SetClassValue(ref this.address, value); }
         }
     }
 
@@ -37,7 +36,7 @@ namespace AillieoUtils.EasyBindings.Tests
             TestClass testClass = new TestClass();
             int counter = 0;
 
-            EventHandle handle = testClass.onPropertyChanged.AddListener(propName =>
+            EventHandle handle = testClass.onPropertyChangedDel.AddListener(propName =>
             {
                 counter++;
                 Assert.AreEqual(propName, "Age");

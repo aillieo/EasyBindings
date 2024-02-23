@@ -1,9 +1,14 @@
-using NUnit.Framework;
-using System;
-using UnityEngine;
+// -----------------------------------------------------------------------
+// <copyright file="TestBindableProperty.cs" company="AillieoTech">
+// Copyright (c) AillieoTech. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace AillieoUtils.EasyBindings.Tests
 {
+    using System;
+    using NUnit.Framework;
+
     [Category("BindableProperty")]
     public class TestBindableProperty
     {
@@ -15,7 +20,7 @@ namespace AillieoUtils.EasyBindings.Tests
 
             Assert.AreEqual(intProperty.CurrentValue, 0);
 
-            EventHandle handle = intProperty.onValueChanged.AddListener(change =>
+            EventHandle handle = intProperty.onValueChangedDel.AddListener(change =>
             {
                 counter++;
             });
@@ -48,7 +53,7 @@ namespace AillieoUtils.EasyBindings.Tests
 
             Assert.AreEqual(intProperty.CurrentValue, oldValue);
 
-            EventHandle handle = intProperty.onValueChanged.AddListener(change =>
+            EventHandle handle = intProperty.onValueChangedDel.AddListener(change =>
             {
                 Assert.AreEqual(oldValue, change.oldValue);
                 Assert.AreEqual(newValue, change.nextValue);
@@ -74,7 +79,7 @@ namespace AillieoUtils.EasyBindings.Tests
 
             Assert.AreEqual(stringProperty.CurrentValue, string.Empty);
 
-            EventHandle handle = stringProperty.onValueChanged.AddListener(change => counter++);
+            EventHandle handle = stringProperty.onValueChangedDel.AddListener(change => counter++);
 
             stringProperty.Next("SomeValue");
             Assert.AreEqual(counter, 1);
