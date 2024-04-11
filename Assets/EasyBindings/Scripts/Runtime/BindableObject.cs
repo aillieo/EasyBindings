@@ -14,21 +14,12 @@ namespace AillieoUtils.EasyBindings
     /// </summary>
     public abstract class BindableObject
     {
-        internal readonly EasyDelegate<string> onPropertyChangedDel = new EasyDelegate<string>();
+        private readonly EasyDelegate<string> onPropertyChangedDel = new EasyDelegate<string>();
 
         /// <summary>
         /// Gets the event that the object property changed.
         /// </summary>
         public EasyEvent<string> onPropertyChanged => this.onPropertyChangedDel;
-
-        /// <summary>
-        /// Notify that the property changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the changed property.</param>
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            this.onPropertyChangedDel.Invoke(propertyName);
-        }
 
         /// <summary>
         /// A helper method used to change value of a property and fire event.
@@ -40,65 +31,13 @@ namespace AillieoUtils.EasyBindings
         /// <returns>Whether the property value changed.</returns>
         protected bool SetValue<T>(ref T currentValue, T newValue, [CallerMemberName] string propertyName = "")
         {
-            if (typeof(T).IsValueType)
-            {
-                if (EqualityComparer<T>.Default.Equals(currentValue, newValue))
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if ((currentValue == null && newValue == null) || (currentValue != null && currentValue.Equals(newValue)))
-                {
-                    return false;
-                }
-            }
-
-            currentValue = newValue;
-            this.NotifyPropertyChanged(propertyName);
-            return true;
-        }
-
-        /// <summary>
-        /// A helper method used to change value of a struct property and fire event.
-        /// </summary>
-        /// <param name="currentValue">Current value of the property.</param>
-        /// <param name="newValue">New value of the property.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <typeparam name="T">Type of the property.</typeparam>
-        /// <returns>Whether the property value changed.</returns>
-        protected bool SetStructValue<T>(ref T currentValue, T newValue, [CallerMemberName] string propertyName = "")
-            where T : struct
-        {
             if (EqualityComparer<T>.Default.Equals(currentValue, newValue))
             {
                 return false;
             }
 
             currentValue = newValue;
-            this.NotifyPropertyChanged(propertyName);
-            return true;
-        }
-
-        /// <summary>
-        /// A helper method used to change value of a class property and fire event.
-        /// </summary>
-        /// <param name="currentValue">Current value of the property.</param>
-        /// <param name="newValue">New value of the property.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <typeparam name="T">Type of the property.</typeparam>
-        /// <returns>Whether the property value changed.</returns>
-        protected bool SetClassValue<T>(ref T currentValue, T newValue, [CallerMemberName] string propertyName = "")
-            where T : class
-        {
-            if ((currentValue == null && newValue == null) || (currentValue != null && currentValue.Equals(newValue)))
-            {
-                return false;
-            }
-
-            currentValue = newValue;
-            this.NotifyPropertyChanged(propertyName);
+            this.onPropertyChangedDel.Invoke(propertyName);
             return true;
         }
     }

@@ -10,20 +10,18 @@ namespace AillieoUtils.EasyBindings.Tests
 
     public class TestClass : BindableObject
     {
-        private int age;
-
+        [NotifyOnValueChanged]
         public int Age
         {
-            get { return this.age; }
-            set { this.SetStructValue(ref this.age, value); }
+            get;
+            set;
         }
 
-        private string address;
-
+        [NotifyOnValueChanged]
         public string Address
         {
-            get { return this.address; }
-            set { this.SetClassValue(ref this.address, value); }
+            get;
+            set;
         }
     }
 
@@ -36,7 +34,7 @@ namespace AillieoUtils.EasyBindings.Tests
             TestClass testClass = new TestClass();
             int counter = 0;
 
-            EventHandle handle = testClass.onPropertyChangedDel.AddListener(propName =>
+            EventHandle handle = testClass.onPropertyChanged.AddListener(propName =>
             {
                 counter++;
                 Assert.AreEqual(propName, "Age");

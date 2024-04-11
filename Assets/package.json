@@ -6,6 +6,7 @@
     "unity": "2019.4",
     "license": "MIT",
     "dependencies": {
+        "com.unity.nuget.mono-cecil": "1.11.4",
         "com.aillieo.easy-events": "https://github.com/aillieo/EasyEvent.git#upm"
     }
 }

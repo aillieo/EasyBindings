@@ -58,6 +58,11 @@ namespace AillieoUtils.EasyBindings.Collections
             this.source = new Dictionary<TKey, TValue>();
         }
 
+        /// <summary>
+        /// Gets ths event that will be invoked when the dictionary changes.
+        /// </summary>
+        public EasyEvent<DictionaryChangedEventArg<TKey>> onDictionaryChanged => this.dictionaryChangedEvent;
+
         /// <inheritdoc/>
         public ICollection<TKey> Keys => this.source.Keys;
 

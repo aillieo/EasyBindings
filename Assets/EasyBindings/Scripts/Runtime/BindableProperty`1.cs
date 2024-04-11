@@ -40,9 +40,13 @@ namespace AillieoUtils.EasyBindings
         }
 
         /// <summary>
-        /// Gets current value of the property.
+        /// Gets or sets current value of the property.
         /// </summary>
-        public T CurrentValue => this.value;
+        public T CurrentValue
+        {
+            get => this.value;
+            set => this.Next(value);
+        }
 
         /// <summary>
         /// Gets the event that the property value changed.
@@ -65,6 +69,12 @@ namespace AillieoUtils.EasyBindings
             this.value = nextValue;
             this.onValueChangedDel.Invoke(new PropertyChangedEventArg<T>(oldValue, nextValue));
             return true;
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{nameof(BindableProperty<T>)}({this.onValueChangedDel.ListenerCount}):{this.value}";
         }
     }
 }

@@ -158,7 +158,7 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            EventHandle handle = bindableObject.onPropertyChangedDel.AddListener(eventHandler);
+            EventHandle handle = bindableObject.onPropertyChanged.AddListener(eventHandler);
             this.Record(handle);
         }
 
@@ -185,7 +185,7 @@ namespace AillieoUtils.EasyBindings
                 return;
             }
 
-            EventHandle handle = bindableObject.onPropertyChangedDel.AddListener(property =>
+            EventHandle handle = bindableObject.onPropertyChanged.AddListener(property =>
             {
                 if (property == propertyName)
                 {

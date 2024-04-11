@@ -56,6 +56,11 @@ namespace AillieoUtils.EasyBindings.Collections
             this.source = new HashSet<T>();
         }
 
+        /// <summary>
+        /// Gets ths event that will be invoked when the set changes.
+        /// </summary>
+        public EasyEvent<SetChangedEventArg<T>> onSetChanged => this.setChangedEvent;
+
         /// <inheritdoc/>
         public int Count => this.source.Count;
 

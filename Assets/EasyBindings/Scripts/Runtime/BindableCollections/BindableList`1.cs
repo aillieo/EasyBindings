@@ -36,6 +36,11 @@ namespace AillieoUtils.EasyBindings.Collections
             this.source = new List<T>();
         }
 
+        /// <summary>
+        /// Gets ths event that will be invoked when the list changes.
+        /// </summary>
+        public EasyEvent<ListChangedEventArg> onListChanged => this.listChangedEvent;
+
         /// <inheritdoc/>
         public int Count => this.source.Count;
 
